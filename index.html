@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <title>WeatherApp</title>
+</head>
+
+<body class="bg-dark">
+    
+    <div data-js="container" class="container mx-auto text-center bg-primary rounded initial">
+
+        <header class="my-3 mx-auto">
+            
+            <h2 class="app-title text-light my-4">Informações Sobre o Clima</h2>
+
+            <form data-js="search-form" class="my-3 mx-auto">
+                <label for="city" class="px-1 text-light">Insira o nome da cidade</label>
+                <input class="mb-3" type="text" name="city" placeholder="Ex: Tokyo" autofocus>        
+            </form>
+
+            <div class="text-center text-warning mx-auto">
+                <span data-js="city-not-found-message"></span>
+
+            </div>
+
+        </header>
+
+        <div data-js="weather-info-container" class="weather-info-container rounded-border bg-light py-2  d-none">
+
+            <div class="card-container my-1">
+                <img data-js="time" class="rounded-border img-fluid mt-3" src="" />
+            </div>
+
+            <div class="adjustment-container text-center mx-auto">
+
+                <div class="weather-container rounded-border bg-light media">
+
+                    <img data-js="weather-icon" class="img-fluid align-self-center ml-4" src="" />
+
+                    <div class="media-body align-self-center text-center">
+                        <h5 data-js="weather-text" class="mr-5 ml-4 my-2">Clima</h5>
+                    </div>
+  
+                </div>
+                
+                <div class="city-name-container rounded-border text-center my-1 bg-light">
+                    <h4 data-js="city-name" class="my-2 mx-auto">Cidade</h4>
+                </div>
+                    
+                <div class="temperature-container rounded-border text-center mb-3 bg-light">
+                    <span data-js="temperature" class="display-4">00.0</span>
+                    <span class="display-4">°C</span>
+                </div>
+    
+            </div>
+  
+        </div>
+    </div>
+    <script src="./js/weather.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>
