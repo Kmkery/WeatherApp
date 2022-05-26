@@ -1,70 +1,71 @@
-const container = document.querySelector('[data-js="container')
+const appContainer = document.querySelector('[data-js="outer-container"]')
 const cityNotFoundMessage = document.querySelector('[data-js="city-not-found-message"]')
-
 const cityForm = document.querySelector('[data-js="search-form"]')
 const weatherInfoContainer = document.querySelector('[data-js="weather-info-container"]')
-const cityName = document.querySelector('[data-js="city-name"]')
+const cityTitle = document.querySelector('[data-js="city-title"]')
 const dayTime = document.querySelector('[data-js="time"]')
 const weatherIcon = document.querySelector('[data-js="weather-icon"]')
-const weatherInfo = document.querySelector('[data-js="weather-text"]')
+const weatherText = document.querySelector('[data-js="weather-text"]')
 const temperatureInfo = document.querySelector('[data-js="temperature"]')
 
 
-const setWeatherImages = (IsDayTime, WeatherIcon) => {
-    IsDayTime 
-        ? dayTime.src = "./src/day.svg" 
-        : dayTime.src = "./src/night.svg"
+const showWeatherInfoContainer = () => {
+    const weatherInfoContainerIsHidden = weatherInfoContainer.classList.contains('d-none')
     
-    weatherIcon.src = `./src/icons/${WeatherIcon}.svg`
-}
-
-
-
-const displayContainer = (cityData) => {
-
-    const containerIsHidden = weatherInfoContainer.classList.contains('d-none')
-    
-    if(containerIsHidden && cityData) {
-        container.classList.remove('initial')
-        weatherInfoContainer.classList.remove('d-none')   
-    } else if(!cityData) {
-        container.classList.add('initial')
-        weatherInfoContainer.classList.add('d-none')   
+    if( weatherInfoContainerIsHidden ) {
+        appContainer.classList.remove('initial-app-container-style')
+        weatherInfoContainer.classList.remove('d-none')                  
     }
 }
 
-
-const setWeatherTexts = (LocalizedName, WeatherText, Temperature) => {
-    cityName.innerText = LocalizedName
-    weatherInfo.innerText = WeatherText
-    temperatureInfo.innerText = Temperature.Metric.Value
+const showMessage = message => {
+    cityNotFoundMessage.innerText = message
+    appContainer.classList.add('initial-app-container-style')
+    weatherInfoContainer.classList.add('d-none')
 }
 
+const getWeatherInfo = async cityName => {
+    const  [ cityData ]  = await getCityData(cityName)
+   
+    if( !cityData ) {
+        showMessage("Cidade não encontrada")
+        return
+    } 
+    
+    const [ weatherInfo ] = await getCityWeatherData(cityData.Key)
 
-cityForm.addEventListener('submit', async event => {
+    return [ weatherInfo, cityData.LocalizedName ]
+}
+
+const showWeatherInfo = async event => {
     event.preventDefault()
 
-    const inputValue = event.target.city.value 
-    const [cityData] = await getCityData(inputValue)
+    const cityName = event.target.city.value 
 
-    if(!cityData) {
-        cityNotFoundMessage.innerText = "Cidade não encontrada."
-        
-        displayContainer(cityData)
+    if( cityName === '' ) {
+        alert('Você deve digitar uma cidade')
         return
-
-    } else {
-        cityNotFoundMessage.innerText = ""
-    
-        const [{ IsDayTime, WeatherIcon, WeatherText, Temperature }] = await getCityWeatherData(cityData.Key)
-
-        setWeatherImages(IsDayTime, WeatherIcon)
-        setWeatherTexts(cityData.LocalizedName, WeatherText, Temperature)
-        
-        displayContainer(cityData)
     }
-    
-    cityForm.reset()
 
-})
+    const weatherInfo = await getWeatherInfo(cityName)
+
+    if (!weatherInfo) {
+        return
+    }
+
+    const [ {IsDayTime, WeatherIcon, WeatherText, Temperature}, LocalizedName ] = weatherInfo
+
+    cityNotFoundMessage.innerText = ''
+    dayTime.src = IsDayTime ? './src/day.svg' : './src/night.svg'
+    weatherIcon.src = `./src/icons/${WeatherIcon}.svg`
+    cityTitle.innerText = LocalizedName
+    weatherText.innerText = WeatherText
+    temperatureInfo.innerText = Temperature.Metric.Value
+    
+    showWeatherInfoContainer()
+  
+    cityForm.reset()
+}
+
+cityForm.addEventListener('submit', showWeatherInfo)
 
