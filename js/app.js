@@ -8,7 +8,6 @@ const weatherIcon = document.querySelector('[data-js="weather-icon"]')
 const weatherText = document.querySelector('[data-js="weather-text"]')
 const temperatureInfo = document.querySelector('[data-js="temperature"]')
 
-
 const showWeatherInfoContainer = () => {
     const weatherInfoContainerIsHidden = weatherInfoContainer.classList.contains('d-none')
     
