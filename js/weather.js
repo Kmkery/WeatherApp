@@ -1,4 +1,4 @@
-const APIKey = 'R0wAH9G6pilL3IyU6alXm9MebULzk6XI'
+const APIKey = ''
 
 const getCityUrl = cityName => `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${APIKey}&q=${cityName}`
 const getCityWeatherUrl = cityKey => `http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${APIKey}&language=pt-br`
